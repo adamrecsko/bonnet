@@ -13,6 +13,10 @@ var Promise = require("promise");
  * bonnet wrapper.
  */
 function wrap(generator) {
+    if (typeof generator !== "function") {
+        throw new Error("bonnet expect a function");
+    }
+
     return function () {
         var args = arguments;
         return new Promise(function (resolve, reject) {

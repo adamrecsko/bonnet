@@ -3,7 +3,7 @@ var expect = require('expect.js');
 var wrap = bonnet.wrap;
 
 describe('bonnet', function () {
-    describe('bonnet constructor', function () {
+    describe('constructor', function () {
         it('should resolve promise with the result', function (done) {
             var ITERTO = 10;
             var expectedResult = ITERTO * (ITERTO + 1) / 2; // Sum of first N number
@@ -24,8 +24,6 @@ describe('bonnet', function () {
         });
 
         it('should reject promise with the error throwned', function (done) {
-            var ITERTO = 10;
-            var expectedResult = ITERTO * (ITERTO + 1) / 2; // Sum of first N number
             bonnet(function* () {
                 throw new Error("TEST ERROR");
                 return true;
@@ -34,6 +32,12 @@ describe('bonnet', function () {
                 expect(error.message).to.be("TEST ERROR");
                 done();
             });
+        });
+
+        it('should throw an exception if not a function given', function () {
+            expect(function () {
+                bonnet("Not a function");
+            }).to.throwError();
         });
     });
 
