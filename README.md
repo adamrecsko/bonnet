@@ -72,5 +72,9 @@ wrappedFunction("foo","bar").then(function(data){
 
 ```
 
+##Test
+```
+  $ npm test
+```
 
 
