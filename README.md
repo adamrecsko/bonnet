@@ -1,6 +1,9 @@
 # bonnet
 Bonnet is a simple tool for distributing your long running blocking tasks in time using ES6 generators in [node](http://nodejs.org/).
 
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+
 Using Bonnet you are able to split your computation into pieces with yield and in the end return your result.
 Bonnet returns a promise and resolves it, if your function finished or rejects it, if you throw an error. 
 The benefit of this is that you won't block your event loop if you are working on small fast parts.
