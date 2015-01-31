@@ -6,7 +6,7 @@ Bonnet returns a promise and resolves it, if your function finished or rejects i
 The benefit of this is that you won't block your event loop if you are working on small fast parts.
 
 Installation
-============
+------------
 
 ```
 $ npm install bonnet
@@ -19,11 +19,9 @@ bonnet(myGenerator);
 
 ```
 
-How to use
-==========
+## How to use
 
-Simple example
---------------
+### Simple example
 
 ```javascript
 var bonnet = require('bonnet');
@@ -42,8 +40,7 @@ bonnet(function* () {
 ```
 
 
-Combine with promises
----------------------
+### Combine with promises
 
 ```javascript
 var bonnet = require('bonnet');
@@ -66,8 +63,7 @@ bonnet(function* () {
 ```
 
 
-Error handling
---------------
+### Error handling
 
 ```javascript
 var bonnet = require('bonnet');
@@ -83,8 +79,7 @@ bonnet(function* () {
 ```
 
 
-Wrapper
--------
+### Wrapper
 
 ```javascript
 var wrap = require('bonnet').wrap;
@@ -102,8 +97,7 @@ wrappedFunction("foo","bar").then(function(data){
 
 ```
 
-Test
-----
+## Test
 ```
   $ npm test
 ```
