@@ -1,6 +1,7 @@
 var bonnet = require('../index.js');
 var expect = require('expect.js');
 var wrap = bonnet.wrap;
+var Promise = require('promise');
 
 describe('bonnet', function () {
     describe('constructor', function () {
@@ -20,6 +21,46 @@ describe('bonnet', function () {
                 done();
             }, function (error) {
                 console.log(error);
+            });
+        });
+
+        it('should wait for the yielded promise to fulfilled', function (done) {
+            var expectedResult = "test0123456";
+            var yieldPromise = function* () {
+                var result = "test";
+                for (var i = 0; i < 7; i++) {
+                    result +=
+                        yield new Promise(function (resolve, reject) {
+                            setTimeout(function () {
+                                resolve(i);
+                            }, 10);
+                        });
+                }
+                return result;
+            };
+
+            bonnet(yieldPromise).then(function (data) {
+                expect(data).to.be(expectedResult);
+                done();
+            }, function (error) {
+                console.log(error);
+            });
+        });
+
+
+        it('should reject if the yielded promise is rejected', function (done) {
+            var yieldPromise = function* () {
+                yield new Promise(function (resolve, reject) {
+                    setTimeout(function () {
+                        reject("test error");
+                    }, 10);
+                });
+                return true;
+            };
+
+            bonnet(yieldPromise).then(null, function (error) {
+                expect(error).to.be("test error");
+                done();
             });
         });
 

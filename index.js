@@ -24,13 +24,15 @@ function wrap(generator) {
             var result = {};
 
             function callNext() {
-                try {
-                    result = iterator.next(result.value);
-                } catch (error) {
-                    return reject(error);
-                }
-                if (result.done) return resolve(result.value);
-                setImmediate(callNext);
+                Promise.resolve(result.value).then(function (value) {
+                    result = iterator.next(value);
+                    if (result.done) {
+                        return resolve(result.value);
+                    }
+                    setImmediate(callNext);
+                }).then(null, function (error) {
+                    reject(error);
+                });
             }
             callNext();
         });
@@ -42,4 +44,12 @@ function wrap(generator) {
  */
 function bonnet(generator) {
     return wrap(generator)();
+}
+
+/**
+ * is it promise
+ */
+
+function isThenable(obj) {
+    return 'then' in obj && typeof obj.then === 'function';
 }
