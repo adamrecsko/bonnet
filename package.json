@@ -1,6 +1,6 @@
 {
     "name": "bonnet",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Bonnet is a simple tool for distribute your long running blocking tasks in time, using ES6 generators.",
     "main": "index.js",
     "scripts": {
