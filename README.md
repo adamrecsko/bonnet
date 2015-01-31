@@ -38,6 +38,30 @@ bonnet(function* () {
 
 ```
 
+
+###Combine with promises
+
+```javascript
+var bonnet = require('bonnet');
+var Promise = require('promise');
+bonnet(function* () {
+    var result = "foo";
+    result +=
+        yield new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                resolve("bar");
+            }, 10);
+        });
+    result +=
+        yield "foo";
+    return result;
+}).then(function (data) {
+    console.log(data); //foobarfoo
+});
+
+```
+
+
 ###Error handling
 
 ```javascript
