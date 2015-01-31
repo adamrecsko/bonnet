@@ -1,11 +1,34 @@
 var bonnet = require('../index.js');
-var expect = require('expect.js');
 var wrap = bonnet.wrap;
+var expect = require('expect.js');
 var Promise = require('promise');
 
+
+
+
+
 describe('bonnet', function () {
+    
+    /** Test functions*/
+    function testAsyncTask(i) {
+                return new Promise(function (resolve, reject) {
+                    setTimeout(function () {
+                        resolve(i);
+                    }, 10);
+                });
+    }
+    
+    function testAsyncError(){
+               return new Promise(function (resolve, reject) {
+                    setTimeout(function () {
+                        reject("test error");
+                    }, 10);
+                });
+    }
+    
+    
     describe('constructor', function () {
-        it('should resolve promise with the result', function (done) {
+        it('should resolve promise with the result', function () {
             var ITERTO = 10;
             var expectedResult = ITERTO * (ITERTO + 1) / 2; // Sum of first N number
             var firstNNumber = function* () {
@@ -16,62 +39,46 @@ describe('bonnet', function () {
                 return sum;
             };
 
-            bonnet(firstNNumber).then(function (data) {
+            return bonnet(firstNNumber).then(function (data) {
                 expect(data).to.be(expectedResult);
-                done();
-            }, function (error) {
-                console.log(error);
             });
         });
 
-        it('should wait for the yielded promise to fulfilled', function (done) {
+        it('should wait for the yielded promise to fulfilled', function () {
             var expectedResult = "test0123456";
+
+
             var yieldPromise = function* () {
                 var result = "test";
                 for (var i = 0; i < 7; i++) {
-                    result +=
-                        yield new Promise(function (resolve, reject) {
-                            setTimeout(function () {
-                                resolve(i);
-                            }, 10);
-                        });
+                    result += yield testAsyncTask(i);
                 }
                 return result;
             };
 
-            bonnet(yieldPromise).then(function (data) {
+            return bonnet(yieldPromise).then(function (data) {
                 expect(data).to.be(expectedResult);
-                done();
-            }, function (error) {
-                console.log(error);
             });
         });
 
-
-        it('should reject if the yielded promise is rejected', function (done) {
+        it('should reject if the yielded promise is rejected', function () {
             var yieldPromise = function* () {
-                yield new Promise(function (resolve, reject) {
-                    setTimeout(function () {
-                        reject("test error");
-                    }, 10);
-                });
+                yield testAsyncError();
                 return true;
             };
 
-            bonnet(yieldPromise).then(null, function (error) {
+           return bonnet(yieldPromise).then(null, function (error) {
                 expect(error).to.be("test error");
-                done();
             });
         });
 
-        it('should reject promise with the error throwned', function (done) {
-            bonnet(function* () {
+        it('should reject promise with the error throwned', function () {
+            return  bonnet(function* () {
                 throw new Error("TEST ERROR");
                 return true;
             }).then(null, function (error) {
                 expect(error).to.be.a(Error);
                 expect(error.message).to.be("TEST ERROR");
-                done();
             });
         });
 
@@ -83,16 +90,14 @@ describe('bonnet', function () {
     });
 
     describe("wrapper", function () {
-        it("should wrap generator into bonnet function", function (done) {
+        it("should wrap generator into bonnet function", function () {
             var testFunction = function* (a, b) {
-                var result =
-                    yield a + b;
+                var result = yield a + b;
                 return result;
             };
             var wrappedFunction = bonnet.wrap(testFunction);
-            wrappedFunction(10, 11).then(function (data) {
+            return wrappedFunction(10, 11).then(function (data) {
                 expect(data).to.be(21);
-                done();
             });
         });
     });

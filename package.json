@@ -1,6 +1,6 @@
 {
     "name": "bonnet",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Bonnet is a simple tool for distribute your long running blocking tasks in time, using ES6 generators.",
     "main": "index.js",
     "scripts": {
@@ -14,12 +14,12 @@
         "url": "https://github.com/adamrecsko/bonnet.git"
     },
     "keywords": [
-    "async",
-    "blocking",
-    "task",
-    "generators",
-    "es6"
-  ],
+        "async",
+        "blocking",
+        "task",
+        "generators",
+        "es6"
+    ],
     "author": "Adam Recsko <adam.recsko@gmail.com>",
     "license": "ISC",
     "bugs": {
