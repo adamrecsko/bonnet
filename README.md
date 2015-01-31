@@ -5,8 +5,7 @@ Using Bonnet you are able to split your computation into pieces with yield and i
 Bonnet returns a promise and resolves it, if your function finished or rejects it, if you throw an error. 
 The benefit of this is that you won't block your event loop if you are working on small fast parts.
 
-Installation
-------------
+## Installation
 
 ```
 $ npm install bonnet
@@ -45,16 +44,20 @@ bonnet(function* () {
 ```javascript
 var bonnet = require('bonnet');
 var Promise = require('promise');
+
+
+function myAsynchronousTask() {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            resolve("bar");
+        }, 10);
+    });
+}
+
 bonnet(function* () {
     var result = "foo";
-    result +=
-        yield new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                resolve("bar");
-            }, 10);
-        });
-    result +=
-        yield "foo";
+    result += yield myAsynchronousTask();
+    result += yield "foo";
     return result;
 }).then(function (data) {
     console.log(data); //foobarfoo
