@@ -4,10 +4,10 @@
     "description": "Bonnet is a simple tool for distribute your long running blocking tasks in time, using ES6 generators.",
     "main": "index.js",
     "scripts": {
-        "test": "mocha test  --harmony"
+        "test": "mocha test"
     },
     "engines": {
-        "node": ">= 0.11.13"
+        "node": ">= 0.12"
     },
     "repository": {
         "type": "git",
